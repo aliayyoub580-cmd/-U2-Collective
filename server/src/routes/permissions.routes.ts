@@ -2,7 +2,7 @@ import { Router } from 'express'
 import type { Response } from 'express'
 import type { AuthRequest } from '../types/index.js'
 import { authenticate, requireAdmin } from '../middleware/auth.js'
-import { supabaseAdmin } from '../config/supabase.js'
+import { createUserClient } from '../config/supabase.js'
 import { ok, serverError } from '../utils/response.js'
 
 const router = Router()
@@ -10,9 +10,10 @@ router.use(authenticate)
 
 // GET  /api/permissions              → all permission keys (auth users)
 // GET  /api/permissions/template/:id → keys for a template
-router.get('/', async (_req: AuthRequest, res: Response) => {
+router.get('/', async (req: AuthRequest, res: Response) => {
   try {
-    const { data, error } = await supabaseAdmin
+    const token = req.headers.authorization?.slice('Bearer '.length) ?? ''
+    const { data, error } = await createUserClient(token)
       .from('permissions')
       .select('key, label, category, description')
       .order('category')
@@ -27,7 +28,8 @@ router.get('/', async (_req: AuthRequest, res: Response) => {
 
 router.get('/template/:id', requireAdmin, async (req: AuthRequest, res: Response) => {
   try {
-    const { data, error } = await supabaseAdmin
+    const token = req.headers.authorization?.slice('Bearer '.length) ?? ''
+    const { data, error } = await createUserClient(token)
       .from('permission_template_items')
       .select('permission_key')
       .eq('template_id', req.params.id)
@@ -40,9 +42,10 @@ router.get('/template/:id', requireAdmin, async (req: AuthRequest, res: Response
 })
 
 // GET  /api/permissions/templates → list all templates
-router.get('/templates', async (_req: AuthRequest, res: Response) => {
+router.get('/templates', async (req: AuthRequest, res: Response) => {
   try {
-    const { data, error } = await supabaseAdmin
+    const token = req.headers.authorization?.slice('Bearer '.length) ?? ''
+    const { data, error } = await createUserClient(token)
       .from('permission_templates')
       .select('id, name, description, is_system')
       .order('name')

@@ -1,7 +1,6 @@
 import type { Response, NextFunction } from 'express'
 import type { AuthRequest, UserRole } from '../types/index.js'
-import { supabase } from '../config/supabase.js'
-import { supabaseAdmin } from '../config/supabase.js'
+import { createUserClient, supabase } from '../config/supabase.js'
 import { unauthorized, forbidden } from '../utils/response.js'
 import { logger } from '../utils/logger.js'
 
@@ -37,8 +36,10 @@ export async function authenticate(
       return
     }
 
-    // Fetch profile from database
-    const { data: profile, error: profileError } = await supabaseAdmin
+    // Fetch the caller's profile with their JWT. The profiles_select_own RLS
+    // policy authorizes this without requiring service-role credentials.
+    const userClient = createUserClient(token)
+    const { data: profile, error: profileError } = await userClient
       .from('profiles')
       .select('id, email, role, organization_id, is_active')
       .eq('id', user.id)
@@ -63,7 +64,7 @@ export async function authenticate(
     }
 
     // Update last_login (fire-and-forget)
-    supabaseAdmin
+    userClient
       .from('profiles')
       .update({ last_login: new Date().toISOString() })
       .eq('id', user.id)

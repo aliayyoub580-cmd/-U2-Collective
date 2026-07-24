@@ -4,6 +4,7 @@ import { CheckSquare, Square, Search, ChevronDown, ChevronRight } from 'lucide-r
 import api from '@/services/api'
 import Modal from '@/components/ui/Modal'
 import Button from '@/components/ui/Button'
+import Input from '@/components/ui/Input'
 import { toast } from 'sonner'
 
 interface Permission {
@@ -33,6 +34,10 @@ export default function PermissionMatrixModal({
   const [selected, setSelected] = useState<Set<string>>(new Set())
   const [search, setSearch] = useState('')
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set())
+  const [fullName, setFullName] = useState('')
+  const [email, setEmail] = useState('')
+  const [phone, setPhone] = useState('')
+  const [password, setPassword] = useState('')
 
   // Fetch all permissions
   const { data: allPerms } = useQuery<Permission[]>({
@@ -55,6 +60,15 @@ export default function PermissionMatrixModal({
       setSelected(new Set())
     }
   }, [currentPerms, subAdminId])
+
+  useEffect(() => {
+    if (open && !subAdminId) {
+      setFullName('')
+      setEmail('')
+      setPhone('')
+      setPassword('')
+    }
+  }, [open, subAdminId])
 
   // Group permissions by category
   const grouped = (allPerms ?? []).reduce<Record<string, Permission[]>>((acc, p) => {
@@ -116,9 +130,17 @@ export default function PermissionMatrixModal({
   }
 
   const saveMutation = useMutation({
-    mutationFn: () => api.put(`/users/sub-admins/${subAdminId}/permissions`, { permissions: Array.from(selected) }),
+    mutationFn: () => subAdminId
+      ? api.put(`/users/sub-admins/${subAdminId}/permissions`, { permissions: Array.from(selected) })
+      : api.post('/users/sub-admins', {
+          full_name: fullName.trim(),
+          email: email.trim(),
+          phone: phone.trim() || undefined,
+          password,
+          permissions: Array.from(selected),
+        }),
     onSuccess: () => {
-      toast.success('Permissions saved successfully')
+      toast.success(subAdminId ? 'Permissions saved successfully' : 'Sub-admin created successfully')
       onSaved?.()
       onClose()
     },
@@ -134,6 +156,23 @@ export default function PermissionMatrixModal({
       size="xl"
     >
       <div className="flex flex-col gap-4">
+        {!subAdminId && (
+          <div className="grid grid-cols-1 gap-3 rounded-lg border border-[#DCE5EA] bg-[#F7F9FA] p-4 md:grid-cols-2">
+            <Input label="Full Name" required value={fullName} onChange={(e) => setFullName(e.target.value)} />
+            <Input label="Email Address" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
+            <Input label="Phone" value={phone} onChange={(e) => setPhone(e.target.value)} />
+            <Input
+              label="Temporary Password"
+              type="password"
+              required
+              minLength={8}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              hint="At least 8 characters"
+            />
+          </div>
+        )}
+
         {/* Template row */}
         <div>
           <p className="text-[12px] font-semibold text-[#5A6B78] uppercase tracking-wide mb-2">Apply Template</p>
@@ -256,9 +295,9 @@ export default function PermissionMatrixModal({
               size="sm"
               onClick={() => saveMutation.mutate()}
               loading={saveMutation.isPending}
-              disabled={!subAdminId}
+              disabled={!subAdminId && (!fullName.trim() || !email.trim() || password.length < 8)}
             >
-              Save Permissions
+              {subAdminId ? 'Save Permissions' : 'Create Sub-Admin'}
             </Button>
           </div>
         </div>

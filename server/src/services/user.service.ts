@@ -1,4 +1,4 @@
-import { supabaseAdmin } from '../config/supabase.js'
+import { createUserClient, supabaseAdmin } from '../config/supabase.js'
 import { paginationParams } from '../utils/pagination.js'
 import { logger } from '../utils/logger.js'
 import type { AuthUser } from '../types/index.js'
@@ -11,12 +11,12 @@ import type {
 
 export const userService = {
 
-  async listUsers(query: Record<string, unknown>) {
+  async listUsers(query: Record<string, unknown>, token: string) {
     const { page, pageSize, from, to } = paginationParams(query.page as number, query.pageSize as number)
 
-    let q = supabaseAdmin
+    let q = createUserClient(token)
       .from('profiles')
-      .select('id, email, full_name, role, organization_id, is_active, created_at, last_login, organizations(name)', { count: 'exact' })
+      .select('id, email, full_name, role, organization_id, is_active, created_at, last_login, organizations!fk_profiles_organization(name)', { count: 'exact' })
       .order('created_at', { ascending: false })
       .range(from, to)
 
@@ -90,6 +90,14 @@ export const userService = {
     return data
   },
 
+  async updatePassword(id: string, password: string) {
+    const { error } = await supabaseAdmin.auth.admin.updateUserById(id, {
+      password,
+      email_confirm: true,
+    })
+    if (error) throw new Error(error.message)
+  },
+
   async deactivateUser(id: string, updatedBy: AuthUser) {
     // Prevent last super_admin deactivation
     const { data: profile } = await supabaseAdmin.from('profiles').select('role').eq('id', id).single()
@@ -110,10 +118,10 @@ export const userService = {
 
   // ── Sub-admin management ──────────────────────────────────────────────────
 
-  async listSubAdmins(query: Record<string, unknown>) {
+  async listSubAdmins(query: Record<string, unknown>, token: string) {
     const { from, to, page, pageSize } = paginationParams(query.page as number, query.pageSize as number)
 
-    const { data, error, count } = await supabaseAdmin
+    const { data, error, count } = await createUserClient(token)
       .from('sub_admin_profiles')
       .select(`
         id, created_at,
@@ -131,18 +139,31 @@ export const userService = {
     }
   },
 
-  async createSubAdmin(input: CreateSubAdminInput, createdBy: AuthUser) {
-    // Ensure the granting admin can't escalate beyond their own permissions
-    // (Enforced at controller level too)
+  async createSubAdmin(input: CreateSubAdminInput, createdBy: AuthUser, token: string) {
+    // Use public signup for the Auth identity; authenticated admin RLS handles
+    // all role/profile and permission writes.
+    const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
+      email: input.email,
+      password: input.password,
+      email_confirm: true,
+    })
+    if (authError || !authData.user) throw new Error(authError?.message ?? 'Failed to create login')
 
-    const userId = await userService.createUser(
-      { ...input, role: 'sub_admin', password: generateTempPassword() },
-      createdBy,
-    )
+    const userClient = createUserClient(token)
+    const { error: profileError } = await userClient.from('profiles').insert({
+      id: authData.user.id,
+      email: input.email,
+      full_name: input.full_name,
+      role: 'sub_admin',
+      phone: input.phone,
+      is_active: true,
+      created_by: createdBy.id,
+    })
+    if (profileError) throw new Error(profileError.message)
 
-    const { data: sadmin, error } = await supabaseAdmin
+    const { data: sadmin, error } = await userClient
       .from('sub_admin_profiles')
-      .insert({ user_id: userId.id, template_id: input.template_id, created_by: createdBy.id })
+      .insert({ user_id: authData.user.id, template_id: input.template_id, created_by: createdBy.id })
       .select()
       .single()
 
@@ -151,7 +172,7 @@ export const userService = {
     // Resolve permissions from template or direct input
     let permKeys: string[] = input.permissions ?? []
     if (input.template_id && permKeys.length === 0) {
-      const { data: tItems } = await supabaseAdmin
+      const { data: tItems } = await userClient
         .from('permission_template_items')
         .select('permission_key')
         .eq('template_id', input.template_id)
@@ -159,12 +180,23 @@ export const userService = {
     }
 
     if (permKeys.length > 0) {
-      await supabaseAdmin.from('sub_admin_permissions').insert(
+      const { error: permissionsError } = await userClient.from('sub_admin_permissions').insert(
         permKeys.map((k) => ({ sub_admin_id: sadmin.id, permission_key: k, granted_by: createdBy.id })),
       )
+      if (permissionsError) throw new Error(permissionsError.message)
     }
 
     return sadmin
+  },
+
+  async getSubAdminPermissions(subAdminId: string, token: string) {
+    const { data, error } = await createUserClient(token)
+      .from('sub_admin_profiles')
+      .select('sub_admin_permissions(permission_key)')
+      .eq('id', subAdminId)
+      .single()
+    if (error) throw new Error(error.message)
+    return data
   },
 
   async updateSubAdminPermissions(

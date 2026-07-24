@@ -7,7 +7,8 @@ export const userController = {
 
   async listUsers(req: AuthRequest, res: Response): Promise<void> {
     try {
-      const result = await userService.listUsers(req.query as Record<string, unknown>)
+      const token = req.headers.authorization?.slice('Bearer '.length) ?? ''
+      const result = await userService.listUsers(req.query as Record<string, unknown>, token)
       ok(res, result)
     } catch (err) {
       serverError(res, err instanceof Error ? err.message : 'Failed to list users')
@@ -47,7 +48,8 @@ export const userController = {
 
   async listSubAdmins(req: AuthRequest, res: Response): Promise<void> {
     try {
-      const result = await userService.listSubAdmins(req.query as Record<string, unknown>)
+      const token = req.headers.authorization?.slice('Bearer '.length) ?? ''
+      const result = await userService.listSubAdmins(req.query as Record<string, unknown>, token)
       ok(res, result)
     } catch (err) {
       serverError(res, err instanceof Error ? err.message : 'Failed to list sub-admins')
@@ -56,10 +58,30 @@ export const userController = {
 
   async createSubAdmin(req: AuthRequest, res: Response): Promise<void> {
     try {
-      const data = await userService.createSubAdmin(req.body, req.user!)
+      const token = req.headers.authorization?.slice('Bearer '.length) ?? ''
+      const data = await userService.createSubAdmin(req.body, req.user!, token)
       created(res, data, 'Sub-admin created')
     } catch (err) {
       badRequest(res, err instanceof Error ? err.message : 'Create sub-admin failed')
+    }
+  },
+
+  async updatePassword(req: AuthRequest, res: Response): Promise<void> {
+    try {
+      await userService.updatePassword(req.params.id, req.body.password)
+      ok(res, null, 'Password updated successfully')
+    } catch (err) {
+      badRequest(res, err instanceof Error ? err.message : 'Password update failed')
+    }
+  },
+
+  async getSubAdminPermissions(req: AuthRequest, res: Response): Promise<void> {
+    try {
+      const token = req.headers.authorization?.slice('Bearer '.length) ?? ''
+      const data = await userService.getSubAdminPermissions(req.params.id, token)
+      ok(res, data)
+    } catch (err) {
+      serverError(res, err instanceof Error ? err.message : 'Failed to load permissions')
     }
   },
 

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { useQuery } from '@tanstack/react-query'
-import { UserPlus, MoreHorizontal, Filter, Download } from 'lucide-react'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { UserPlus, MoreHorizontal, Filter, Download, Eye, EyeOff } from 'lucide-react'
 import api from '@/services/api'
 import Button from '@/components/ui/Button'
 import StatusBadge from '@/components/ui/StatusBadge'
@@ -12,6 +12,9 @@ import EmptyState from '@/components/ui/EmptyState'
 import ErrorState from '@/components/ui/ErrorState'
 import { useDebounce } from '@/hooks/useDebounce'
 import type { User } from '@/types'
+import Modal from '@/components/ui/Modal'
+import Input from '@/components/ui/Input'
+import { toast } from 'sonner'
 
 const ROLE_LABELS: Record<string, string> = {
   super_admin: 'Super Admin', admin: 'Admin', sub_admin: 'Sub-Admin',
@@ -30,6 +33,9 @@ const ROLE_COLORS: Record<string, string> = {
 export default function UsersPage() {
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
+  const [passwordUser, setPasswordUser] = useState<User | null>(null)
+  const [newPassword, setNewPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
   const debouncedSearch = useDebounce(search, 300)
 
   const { data, isLoading, isError, refetch } = useQuery({
@@ -39,6 +45,16 @@ export default function UsersPage() {
 
   const users: User[] = data?.data ?? []
   const meta = data?.meta ?? { total: 0, page: 1, totalPages: 1 }
+  const passwordMutation = useMutation({
+    mutationFn: () => api.put(`/users/${passwordUser!.id}/password`, { password: newPassword }),
+    onSuccess: () => {
+      toast.success('Password updated successfully')
+      setPasswordUser(null)
+      setNewPassword('')
+      setShowPassword(false)
+    },
+    onError: (error: Error) => toast.error(error.message || 'Password update failed'),
+  })
 
   return (
     <>
@@ -126,7 +142,12 @@ export default function UsersPage() {
                           {user.last_login ? new Date(user.last_login).toLocaleDateString() : 'Never'}
                         </td>
                         <td className="px-5 py-3.5">
-                          <button className="p-1.5 rounded text-[#9BAAB5] hover:text-[#0B3D62] hover:bg-[#EEF6F8] transition-colors">
+                          <button
+                            className="p-1.5 rounded text-[#9BAAB5] hover:text-[#0B3D62] hover:bg-[#EEF6F8] transition-colors"
+                            onClick={() => { setPasswordUser(user); setNewPassword(''); setShowPassword(false) }}
+                            aria-label={`Set password for ${user.full_name}`}
+                            title="Set password"
+                          >
                             <MoreHorizontal size={15} />
                           </button>
                         </td>
@@ -146,6 +167,46 @@ export default function UsersPage() {
             </>
           )}
         </div>
+        <Modal
+          open={Boolean(passwordUser)}
+          onClose={() => setPasswordUser(null)}
+          title="Set User Password"
+          description={`Set a replacement password for ${passwordUser?.full_name ?? 'this user'}. Existing passwords cannot be viewed.`}
+          size="sm"
+        >
+          <form
+            className="flex flex-col gap-4"
+            onSubmit={(event) => {
+              event.preventDefault()
+              passwordMutation.mutate()
+            }}
+          >
+            <Input
+              label="New Password"
+              type={showPassword ? 'text' : 'password'}
+              required
+              minLength={8}
+              value={newPassword}
+              onChange={(event) => setNewPassword(event.target.value)}
+              hint="At least 8 characters. This also confirms the user's email account."
+              rightIcon={
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((visible) => !visible)}
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showPassword ? <EyeOff size={15} /> : <Eye size={15} />}
+                </button>
+              }
+            />
+            <div className="flex justify-end gap-3 border-t border-[#DCE5EA] pt-4">
+              <Button type="button" variant="secondary" size="sm" onClick={() => setPasswordUser(null)}>Cancel</Button>
+              <Button type="submit" size="sm" loading={passwordMutation.isPending} disabled={newPassword.length < 8}>
+                Update Password
+              </Button>
+            </div>
+          </form>
+        </Modal>
       </div>
     </>
   )

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Building2, Plus, Phone, Mail, MoreHorizontal } from 'lucide-react'
 import api from '@/services/api'
 import Button from '@/components/ui/Button'
@@ -10,11 +10,17 @@ import SkeletonLoader from '@/components/ui/SkeletonLoader'
 import EmptyState from '@/components/ui/EmptyState'
 import Pagination from '@/components/ui/Pagination'
 import { useDebounce } from '@/hooks/useDebounce'
+import Modal from '@/components/ui/Modal'
+import Input from '@/components/ui/Input'
+import { toast } from 'sonner'
 
 export default function ClientsPage() {
   const [page, setPage] = useState(1)
   const [search, setSearch] = useState('')
+  const [createOpen, setCreateOpen] = useState(false)
+  const [form, setForm] = useState({ name: '', specialty: '', email: '', phone: '', ehr_system: '' })
   const debouncedSearch = useDebounce(search, 300)
+  const queryClient = useQueryClient()
 
   const { data, isLoading } = useQuery({
     queryKey: ['admin-clients', page, debouncedSearch],
@@ -23,6 +29,18 @@ export default function ClientsPage() {
 
   const clients = data?.data ?? []
   const meta = data?.meta ?? { total: 0, totalPages: 1 }
+  const createMutation = useMutation({
+    mutationFn: () => api.post('/clients', form),
+    onSuccess: async () => {
+      toast.success('Client created successfully')
+      setCreateOpen(false)
+      setForm({ name: '', specialty: '', email: '', phone: '', ehr_system: '' })
+      await queryClient.invalidateQueries({ queryKey: ['admin-clients'] })
+    },
+    onError: (error: Error) => toast.error(error.message || 'Failed to create client'),
+  })
+
+  const openCreate = () => setCreateOpen(true)
 
   return (
     <>
@@ -33,7 +51,7 @@ export default function ClientsPage() {
             <h1 className="text-[1.5rem] font-bold text-[#0B3D62]">Clients</h1>
             <p className="text-[#5A6B78] text-[14px] mt-0.5">{meta.total} client organizations</p>
           </div>
-          <Button size="sm"><Plus size={15} />Add Client</Button>
+          <Button size="sm" onClick={openCreate}><Plus size={15} />Add Client</Button>
         </div>
 
         <div className="flex gap-3 mb-5">
@@ -43,7 +61,7 @@ export default function ClientsPage() {
         {/* Card grid */}
         {isLoading && <SkeletonLoader variant="card" className="mb-4" />}
         {!isLoading && clients.length === 0 && (
-          <EmptyState icon={<Building2 size={22} />} title="No clients found" description="Onboard your first client organization." action={{ label: 'Add Client', onClick: () => {} }} />
+          <EmptyState icon={<Building2 size={22} />} title="No clients found" description="Onboard your first client organization." action={{ label: 'Add Client', onClick: openCreate }} />
         )}
         {!isLoading && clients.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
@@ -95,6 +113,39 @@ export default function ClientsPage() {
             <Pagination page={page} totalPages={meta.totalPages} onPageChange={setPage} />
           </div>
         )}
+        <Modal
+          open={createOpen}
+          onClose={() => setCreateOpen(false)}
+          title="Add Client"
+          description="Create a client organization for portal users and service requests."
+          size="md"
+        >
+          <form
+            className="grid grid-cols-1 gap-4 sm:grid-cols-2"
+            onSubmit={(event) => {
+              event.preventDefault()
+              createMutation.mutate()
+            }}
+          >
+            <Input
+              label="Organization Name"
+              required
+              wrapperClassName="sm:col-span-2"
+              value={form.name}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
+            />
+            <Input label="Specialty" value={form.specialty} onChange={(e) => setForm({ ...form, specialty: e.target.value })} />
+            <Input label="EHR System" value={form.ehr_system} onChange={(e) => setForm({ ...form, ehr_system: e.target.value })} />
+            <Input label="Email" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
+            <Input label="Phone" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
+            <div className="flex justify-end gap-3 border-t border-[#DCE5EA] pt-4 sm:col-span-2">
+              <Button type="button" variant="secondary" size="sm" onClick={() => setCreateOpen(false)}>Cancel</Button>
+              <Button type="submit" size="sm" loading={createMutation.isPending} disabled={form.name.trim().length < 2}>
+                Create Client
+              </Button>
+            </div>
+          </form>
+        </Modal>
       </div>
     </>
   )

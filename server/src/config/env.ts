@@ -1,12 +1,13 @@
 import dotenv from 'dotenv'
-import { basename, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
+import { dirname, resolve } from 'node:path'
 import { z } from 'zod'
 
-const envPath = basename(process.cwd()).toLowerCase() === 'server'
-  ? resolve(process.cwd(), '..', '.env')
-  : resolve(process.cwd(), '.env')
+// Resolve from this module instead of process.cwd(), so both `npm run dev`
+// and the compiled server load server/.env regardless of where they are run.
+const envPath = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..', '.env')
 
-dotenv.config({ path: envPath, override: true })
+dotenv.config({ path: envPath })
 
 const envSchema = z.object({
   PORT:                     z.string().default('4000'),

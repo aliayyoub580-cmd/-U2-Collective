@@ -34,13 +34,18 @@ export default function Modal({
   className,
 }: ModalProps) {
   const dialogRef = useRef<HTMLDivElement>(null)
+  const onCloseRef = useRef(onClose)
   useScrollLock(open)
+
+  useEffect(() => {
+    onCloseRef.current = onClose
+  }, [onClose])
 
   // Focus trap & ESC close
   useEffect(() => {
     if (!open) return
     const handleKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose()
+      if (e.key === 'Escape') onCloseRef.current()
       if (e.key === 'Tab' && dialogRef.current) {
         const focusable = dialogRef.current.querySelectorAll<HTMLElement>(
           'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])',
@@ -59,7 +64,7 @@ export default function Modal({
       dialogRef.current?.querySelector<HTMLElement>('button, [href], input, select, textarea')?.focus()
     }, 50)
     return () => document.removeEventListener('keydown', handleKey)
-  }, [open, onClose])
+  }, [open])
 
   return createPortal(
     <AnimatePresence>
@@ -89,14 +94,14 @@ export default function Modal({
             exit={{ opacity: 0, scale: 0.96, y: 12 }}
             transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
             className={cn(
-              'relative w-full bg-white rounded-2xl shadow-2xl',
+              'relative flex max-h-[calc(100dvh-2rem)] w-full flex-col bg-white rounded-2xl shadow-2xl',
               'border border-[#DCE5EA] overflow-hidden',
               sizeMap[size],
               className,
             )}
           >
             {(title || !hideClose) && (
-              <div className="flex items-start justify-between gap-4 px-6 py-5 border-b border-[#DCE5EA]">
+              <div className="flex shrink-0 items-start justify-between gap-4 px-6 py-5 border-b border-[#DCE5EA]">
                 <div>
                   {title && (
                     <h2 id="modal-title" className="text-[17px] font-bold text-[#0B3D62]">
@@ -120,7 +125,7 @@ export default function Modal({
                 )}
               </div>
             )}
-            <div className="p-6">{children}</div>
+            <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-6">{children}</div>
           </motion.div>
         </div>
       )}

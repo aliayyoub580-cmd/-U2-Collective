@@ -12,6 +12,7 @@ import authRoutes          from './routes/auth.routes.js'
 import verificationRoutes  from './routes/verification.routes.js'
 import authorizationRoutes from './routes/authorization.routes.js'
 import userRoutes          from './routes/user.routes.js'
+import clientRoutes        from './routes/client.routes.js'
 import notificationRoutes  from './routes/notification.routes.js'
 import documentRoutes      from './routes/document.routes.js'
 import dashboardRoutes     from './routes/dashboard.routes.js'
@@ -88,6 +89,7 @@ app.use('/api/auth',           authRoutes)
 app.use('/api/verifications',  verificationRoutes)
 app.use('/api/authorizations', authorizationRoutes)
 app.use('/api/users',          userRoutes)
+app.use('/api/clients',        clientRoutes)
 app.use('/api/notifications',  notificationRoutes)
 app.use('/api/documents',      documentRoutes)
 app.use('/api/dashboard',      dashboardRoutes)

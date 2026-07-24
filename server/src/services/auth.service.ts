@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
-import { supabase, supabaseAdmin } from '../config/supabase.js'
+import { createUserClient, supabase, supabaseAdmin } from '../config/supabase.js'
 import { env } from '../config/env.js'
 import { logger } from '../utils/logger.js'
 import type { LoginInput, RegisterInput } from '../validators/auth.validator.js'
@@ -15,7 +15,8 @@ export const authService = {
       throw new Error('Invalid email or password')
     }
 
-    const { data: profile, error: profileError } = await supabaseAdmin
+    const userClient = createUserClient(data.session.access_token)
+    const { data: profile, error: profileError } = await userClient
       .from('profiles')
       .select('id, full_name, email, role, organization_id, is_active')
       .eq('id', data.user.id)
@@ -96,8 +97,8 @@ export const authService = {
     await tempClient.auth.signOut()
   },
 
-  async getProfile(userId: string) {
-    const { data, error } = await supabaseAdmin
+  async getProfile(userId: string, token: string) {
+    const { data, error } = await createUserClient(token)
       .from('profiles')
       .select('id, full_name, email, role, organization_id, avatar_url, phone, is_active, created_at, last_login')
       .eq('id', userId)

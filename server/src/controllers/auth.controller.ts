@@ -59,7 +59,8 @@ export const authController = {
   async me(req: AuthRequest, res: Response): Promise<void> {
     try {
       if (!req.user) { unauthorized(res); return }
-      const profile = await authService.getProfile(req.user.id)
+      const token = req.headers.authorization?.slice('Bearer '.length) ?? ''
+      const profile = await authService.getProfile(req.user.id, token)
       ok(res, profile)
     } catch (err) {
       serverError(res, err instanceof Error ? err.message : 'Failed to fetch profile')
