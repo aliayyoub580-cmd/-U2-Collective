@@ -1,7 +1,13 @@
 import axios, { AxiosError, type InternalAxiosRequestConfig } from 'axios'
 import { toast } from 'sonner'
 
-const BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000/api'
+const configuredUrl = import.meta.env.VITE_API_URL as string | undefined
+const isLoopbackUrl = configuredUrl
+  ? /^https?:\/\/(localhost|127\.0\.0\.1)(?::\d+)?(?:\/|$)/i.test(configuredUrl)
+  : false
+const BASE_URL = import.meta.env.PROD
+  ? (configuredUrl && !isLoopbackUrl ? configuredUrl : '/api')
+  : (configuredUrl ?? 'http://localhost:4000/api')
 
 export const api = axios.create({
   baseURL: BASE_URL,

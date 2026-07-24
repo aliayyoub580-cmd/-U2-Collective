@@ -38,10 +38,16 @@ app.use(helmet({
 }))
 
 // ─── CORS ─────────────────────────────────────────────────────────────────────
+const allowedOrigins = new Set([
+  env.CLIENT_URL,
+  ...(IS_DEV ? ['http://localhost:5173', 'http://localhost:5174'] : []),
+  ...[process.env.VERCEL_PROJECT_PRODUCTION_URL, process.env.VERCEL_URL]
+    .filter((host): host is string => Boolean(host))
+    .map((host) => `https://${host}`),
+])
+
 app.use(cors({
-  origin: IS_DEV
-    ? [env.CLIENT_URL, 'http://localhost:5173', 'http://localhost:5174']
-    : [env.CLIENT_URL],
+  origin: Array.from(allowedOrigins),
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
@@ -111,11 +117,13 @@ app.use((err: Error, _req: express.Request, res: express.Response, _next: expres
 })
 
 // ─── Start ────────────────────────────────────────────────────────────────────
-const PORT = parseInt(env.PORT)
-app.listen(PORT, () => {
-  logger.info(`🚀 U2 Collective API running on port ${PORT}`)
-  logger.info(`   Environment: ${env.NODE_ENV}`)
-  logger.info(`   Supabase:    ${env.SUPABASE_URL}`)
-})
+if (!process.env.VERCEL) {
+  const PORT = parseInt(env.PORT)
+  app.listen(PORT, () => {
+    logger.info(`🚀 U2 Collective API running on port ${PORT}`)
+    logger.info(`   Environment: ${env.NODE_ENV}`)
+    logger.info(`   Supabase:    ${env.SUPABASE_URL}`)
+  })
+}
 
 export default app
