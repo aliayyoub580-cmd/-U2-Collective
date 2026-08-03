@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 60" width="220" height="60">
+    <path d="M15 15v22c0 6 5 10 11 10s11-4 11-10V15h-7v21c0 2-2 4-4 4s-4-2-4-4V15h-7z" fill="#1E398D"/>
+    <path d="M42 15h7v13l9-13h9l-11 15 12 17h-9l-8-12-2 3v9h-7V15z" fill="#E86C00"/>
+    <text x="75" y="36" font-family="Arial, sans-serif" font-weight="900" font-size="15" fill="#1E398D">UnitedHealthcare</text>
+  </svg>

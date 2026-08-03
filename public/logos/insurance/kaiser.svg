@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 60" width="240" height="60">
+    <circle cx="28" cy="24" r="7" fill="#006699"/>
+    <circle cx="16" cy="36" r="5" fill="#006699"/>
+    <circle cx="40" cy="36" r="5" fill="#006699"/>
+    <text x="54" y="32" font-family="Arial, sans-serif" font-weight="800" font-size="14" fill="#006699">KAISER PERMANENTE</text>
+  </svg>

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 60" width="220" height="60">
+    <ellipse cx="22" cy="30" rx="10" ry="14" fill="#D32F2F"/>
+    <ellipse cx="36" cy="22" rx="8" ry="10" fill="#D32F2F"/>
+    <ellipse cx="36" cy="38" rx="8" ry="10" fill="#D32F2F"/>
+    <text x="50" y="37" font-family="Arial, sans-serif" font-weight="900" font-size="16" fill="#D32F2F">State Farm</text>
+  </svg>

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60" width="200" height="60">
+    <path d="M15 35 A15 15 0 0 1 45 35 Z" fill="#D32F2F"/>
+    <rect x="29" y="35" width="2" height="12" fill="#D32F2F"/>
+    <text x="52" y="40" font-family="Arial, sans-serif" font-weight="900" font-size="18" fill="#D32F2F">TRAVELERS</text>
+  </svg>

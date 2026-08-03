@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 60" width="220" height="60">
+    <path d="M15 15h12v12H15zM27 27h12v12H27z" fill="#005A9C"/>
+    <path d="M27 15h12v12H27zM15 27h12v12H15z" fill="#005A9C"/>
+    <path d="M50 12 L62 17 L62 35 C62 42 50 48 50 48 C50 48 38 42 38 35 L38 17 Z" fill="#005A9C"/>
+    <text x="70" y="37" font-family="Arial, sans-serif" font-weight="800" font-size="18" fill="#005A9C">BlueCross BlueShield</text>
+  </svg>

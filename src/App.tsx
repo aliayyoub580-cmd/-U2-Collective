@@ -8,20 +8,22 @@ import PageLoader from '@/components/ui/PageLoader'
 import { authService } from '@/services/auth.service'
 
 // ── Public pages ──────────────────────────────────────────────────────────────
-const HomePage                  = lazy(() => import('@/pages/public/HomePage'))
-const InsuranceVerificationPage = lazy(() => import('@/pages/public/InsuranceVerificationPage'))
-const PriorAuthorizationPage    = lazy(() => import('@/pages/public/PriorAuthorizationPage'))
-const AuthorizationAppealsPage  = lazy(() => import('@/pages/public/AuthorizationAppealsPage'))
-const HowItWorksPage            = lazy(() => import('@/pages/public/HowItWorksPage'))
-const SpecialtiesPage           = lazy(() => import('@/pages/public/SpecialtiesPage'))
-const AboutPage                 = lazy(() => import('@/pages/public/AboutPage'))
-const ResourcesPage             = lazy(() => import('@/pages/public/ResourcesPage'))
-const ContactPage               = lazy(() => import('@/pages/public/ContactPage'))
-const LoginPage                 = lazy(() => import('@/pages/public/LoginPage'))
-const PrivacyPolicyPage         = lazy(() => import('@/pages/public/PrivacyPolicyPage'))
-const TermsPage                 = lazy(() => import('@/pages/public/TermsPage'))
-const HipaaSecurityPage         = lazy(() => import('@/pages/public/HipaaSecurityPage'))
-const NotFoundPage              = lazy(() => import('@/pages/public/NotFoundPage'))
+const HomePage                   = lazy(() => import('@/pages/public/HomePage'))
+const ProviderCredentiallingPage = lazy(() => import('@/pages/public/ProviderCredentiallingPage'))
+const AppointmentSchedulingPage  = lazy(() => import('@/pages/public/AppointmentSchedulingPage'))
+const InsuranceVerificationPage  = lazy(() => import('@/pages/public/InsuranceVerificationPage'))
+const PriorAuthorizationPage     = lazy(() => import('@/pages/public/PriorAuthorizationPage'))
+const AuthorizationAppealsPage   = lazy(() => import('@/pages/public/AuthorizationAppealsPage'))
+const HowItWorksPage             = lazy(() => import('@/pages/public/HowItWorksPage'))
+const SpecialtiesPage            = lazy(() => import('@/pages/public/SpecialtiesPage'))
+const AboutPage                  = lazy(() => import('@/pages/public/AboutPage'))
+const ResourcesPage              = lazy(() => import('@/pages/public/ResourcesPage'))
+const ContactPage                = lazy(() => import('@/pages/public/ContactPage'))
+const LoginPage                  = lazy(() => import('@/pages/public/LoginPage'))
+const PrivacyPolicyPage          = lazy(() => import('@/pages/public/PrivacyPolicyPage'))
+const TermsPage                  = lazy(() => import('@/pages/public/TermsPage'))
+const HipaaSecurityPage          = lazy(() => import('@/pages/public/HipaaSecurityPage'))
+const NotFoundPage               = lazy(() => import('@/pages/public/NotFoundPage'))
 
 // ── Admin pages ───────────────────────────────────────────────────────────────
 const AdminDashboardPage  = lazy(() => import('@/pages/admin/AdminDashboardPage'))
@@ -52,11 +54,13 @@ export default function App() {
       <Routes>
         {/* ── Public website ─────────────────────────────────────────────── */}
         <Route element={<PublicLayout />}>
-          <Route path="/"                               element={<HomePage />} />
-          <Route path="/services/insurance-verification" element={<InsuranceVerificationPage />} />
-          <Route path="/services/prior-authorization"    element={<PriorAuthorizationPage />} />
-          <Route path="/services/appeals"                element={<AuthorizationAppealsPage />} />
-          <Route path="/how-it-works"                   element={<HowItWorksPage />} />
+          <Route path="/"                                element={<HomePage />} />
+          <Route path="/services/provider-credentialling" element={<ProviderCredentiallingPage />} />
+          <Route path="/services/appointment-scheduling"  element={<AppointmentSchedulingPage />} />
+          <Route path="/services/insurance-verification"  element={<InsuranceVerificationPage />} />
+          <Route path="/services/prior-authorization"     element={<PriorAuthorizationPage />} />
+          <Route path="/services/appeals"                 element={<AuthorizationAppealsPage />} />
+          <Route path="/how-it-works"                    element={<HowItWorksPage />} />
           <Route path="/specialties"                    element={<SpecialtiesPage />} />
           <Route path="/specialties/:slug"              element={<SpecialtiesPage />} />
           <Route path="/about"                          element={<AboutPage />} />
