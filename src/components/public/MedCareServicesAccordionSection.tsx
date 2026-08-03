@@ -119,18 +119,14 @@ export default function MedCareServicesAccordionSection() {
   const [activeId, setActiveId] = useState<string | null>(null)
 
   return (
-    <section className="py-6 lg:py-8 bg-[#071927] text-white relative overflow-hidden" aria-labelledby="services-accordion-heading">
-      {/* Ambient Glows */}
-      <div className="absolute top-0 left-1/4 w-[350px] h-[350px] bg-sky-500/10 rounded-full blur-[90px] pointer-events-none" />
-      <div className="absolute bottom-0 right-1/4 w-[350px] h-[350px] bg-teal-500/10 rounded-full blur-[90px] pointer-events-none" />
-
+    <section className="py-10 lg:py-14 bg-white text-slate-900 relative overflow-hidden" aria-labelledby="services-accordion-heading">
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Title */}
-        <div className="text-center max-w-3xl mx-auto mb-6 lg:mb-8">
-          <p className="text-cyan-400 text-xs font-semibold uppercase tracking-[0.2em] mb-1.5">
+        <div className="text-center max-w-3xl mx-auto mb-8 lg:mb-10">
+          <p className="text-[#1BA098] text-xs font-semibold uppercase tracking-[0.2em] mb-2">
             Core Service Offerings
           </p>
-          <h2 id="services-accordion-heading" className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
+          <h2 id="services-accordion-heading" className="text-2xl sm:text-3xl font-bold tracking-tight text-[#0B3D62]">
             Specialized Healthcare Solutions
           </h2>
         </div>
