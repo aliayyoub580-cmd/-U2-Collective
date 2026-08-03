@@ -2,9 +2,11 @@ import { Link } from 'react-router-dom'
 import { Mail, Phone, MapPin, Twitter, Linkedin, Facebook, ArrowRight } from 'lucide-react'
 
 const SERVICES = [
+  { label: 'Provider Credentialling', href: '/services/provider-credentialling' },
+  { label: 'Appointment Scheduling', href: '/services/appointment-scheduling' },
   { label: 'Insurance Verification', href: '/services/insurance-verification' },
-  { label: 'Prior Authorization', href: '/services/prior-authorization' },
-  { label: 'Authorization Appeals', href: '/services/appeals' },
+  { label: 'Authorization', href: '/services/prior-authorization' },
+  { label: 'Appeals', href: '/services/appeals' },
 ]
 
 const SPECIALTIES = [

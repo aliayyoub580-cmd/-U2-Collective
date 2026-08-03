@@ -5,6 +5,7 @@ import AdminLayout from '@/layouts/AdminLayout'
 import ClientLayout from '@/layouts/ClientLayout'
 import AuthGuard from '@/components/auth/AuthGuard'
 import PageLoader from '@/components/ui/PageLoader'
+import ScrollToTop from '@/components/ui/ScrollToTop'
 import { authService } from '@/services/auth.service'
 
 // ── Public pages ──────────────────────────────────────────────────────────────
@@ -51,6 +52,7 @@ export default function App() {
 
   return (
     <Suspense fallback={<PageLoader />}>
+      <ScrollToTop />
       <Routes>
         {/* ── Public website ─────────────────────────────────────────────── */}
         <Route element={<PublicLayout />}>

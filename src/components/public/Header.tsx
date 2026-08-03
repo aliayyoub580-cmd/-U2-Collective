@@ -3,7 +3,7 @@ import { Link, NavLink } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Menu, X, ChevronDown, Shield, CheckCircle, FileText,
-  LogIn, Stethoscope, Building2, Users, BookOpen,
+  LogIn, Stethoscope, Building2, BookOpen, UserCheck, Calendar,
 } from 'lucide-react'
 import Button from '@/components/ui/Button'
 import { cn } from '@/utils/cn'
@@ -12,9 +12,11 @@ const NAV_ITEMS = [
   {
     label: 'Services',
     children: [
+      { label: 'Provider Credentialling', href: '/services/provider-credentialling', icon: UserCheck, desc: 'Payer enrollment & primary verification' },
+      { label: 'Appointment Scheduling', href: '/services/appointment-scheduling', icon: Calendar, desc: 'Patient scheduling & intake' },
       { label: 'Insurance Verification', href: '/services/insurance-verification', icon: CheckCircle, desc: 'Real-time eligibility and benefits' },
-      { label: 'Prior Authorization', href: '/services/prior-authorization', icon: Shield, desc: 'End-to-end auth management' },
-      { label: 'Authorization Appeals', href: '/services/appeals', icon: FileText, desc: 'Denial management and appeals' },
+      { label: 'Authorization', href: '/services/prior-authorization', icon: Shield, desc: 'End-to-end auth management' },
+      { label: 'Appeals', href: '/services/appeals', icon: FileText, desc: 'Denial management and appeals' },
     ],
   },
   {
@@ -33,10 +35,7 @@ const NAV_ITEMS = [
   },
   {
     label: 'About',
-    children: [
-      { label: 'About U2 Collective', href: '/about', icon: Building2, desc: 'Our mission and team' },
-      { label: 'Our Team', href: '/about#team', icon: Users, desc: 'Meet your specialists' },
-    ],
+    href: '/about',
   },
   {
     label: 'Resources',
@@ -140,7 +139,7 @@ export default function Header() {
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 8, scale: 0.97 }}
                         transition={{ duration: 0.15, ease: 'easeOut' }}
-                        className="absolute top-full left-0 mt-2 w-72 bg-white rounded-xl shadow-xl border border-[#DCE5EA] overflow-hidden"
+                        className="absolute top-full left-0 mt-2 w-80 bg-white rounded-xl shadow-xl border border-[#DCE5EA] overflow-hidden"
                         role="menu"
                       >
                         {item.children.map((child) => (

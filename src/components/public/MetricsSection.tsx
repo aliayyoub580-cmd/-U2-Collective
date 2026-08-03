@@ -15,7 +15,7 @@ const METRICS = [
     note: 'Sample placeholder — update with actual data',
   },
   {
-    value: '500+',
+    value: '1000+',
     label: 'Monthly Eligibility Checks',
     note: 'Sample placeholder — update with actual data',
   },

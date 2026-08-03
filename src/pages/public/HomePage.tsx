@@ -2,7 +2,6 @@ import { Helmet } from 'react-helmet-async'
 import HeroSection from '@/components/public/HeroSection'
 import MedCareServicesAccordionSection from '@/components/public/MedCareServicesAccordionSection'
 import PainPointsSection from '@/components/public/PainPointsSection'
-import ServiceOverviewSection from '@/components/public/ServiceOverviewSection'
 import HowItWorksSection from '@/components/public/HowItWorksSection'
 import WhyChooseSection from '@/components/public/WhyChooseSection'
 import TrustedPlatformsMarquee from '@/components/public/TrustedPlatformsMarquee'
@@ -42,7 +41,6 @@ export default function HomePage() {
       <HeroSection />
       <MedCareServicesAccordionSection />
       <PainPointsSection />
-      <ServiceOverviewSection />
       <HowItWorksSection />
       <WhyChooseSection />
       <TrustedPlatformsMarquee />
