@@ -47,7 +47,7 @@ export default function HowItWorksSection() {
 
   return (
     <section className="py-20 bg-[#EEF6F8]" aria-labelledby="how-it-works-heading">
-      <div className="max-w-[1280px] mx-auto px-6">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6">
         {/* Header */}
         <motion.div
           ref={ref}
@@ -70,12 +70,12 @@ export default function HowItWorksSection() {
           </p>
         </motion.div>
 
-        {/* Desktop: Horizontal steps */}
+        {/* Desktop: Horizontal steps (6 steps in 1 line) */}
         <div className="hidden lg:block">
           <div className="relative">
-            {/* Connecting line */}
-            <div className="absolute top-[2.1rem] left-[calc(10%+1.5rem)] right-[calc(10%+1.5rem)] h-[2px] bg-gradient-to-r from-[#DCE5EA] via-[#1BA098]/40 to-[#DCE5EA]" aria-hidden="true" />
-            <div className="grid grid-cols-5 gap-4">
+            {/* Connecting line connecting centers of 6 columns */}
+            <div className="absolute top-[2.1rem] left-[calc(100%/12)] right-[calc(100%/12)] h-[2px] bg-gradient-to-r from-[#DCE5EA] via-[#1BA098]/40 to-[#DCE5EA]" aria-hidden="true" />
+            <div className="grid grid-cols-6 gap-3 lg:gap-4">
               {STEPS.map((step, i) => (
                 <StepCard key={step.number} step={step} index={i} inView={inView} />
               ))}
@@ -110,8 +110,8 @@ function StepCard({ step, index, inView }: { step: typeof STEPS[0]; index: numbe
         </span>
       </div>
       <div className="pt-2">
-        <h3 className="font-semibold text-[#0B3D62] text-[14px] leading-snug mb-1.5">{step.title}</h3>
-        <p className="text-[#5A6B78] text-[13px] leading-[1.6]">{step.body}</p>
+        <h3 className="font-semibold text-[#0B3D62] text-[13px] xl:text-[14px] leading-snug mb-1.5">{step.title}</h3>
+        <p className="text-[#5A6B78] text-[12px] xl:text-[13px] leading-[1.5]">{step.body}</p>
       </div>
     </motion.div>
   )
