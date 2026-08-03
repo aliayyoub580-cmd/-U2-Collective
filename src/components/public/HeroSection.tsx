@@ -1,11 +1,12 @@
 import { motion, useReducedMotion } from 'framer-motion'
-import { ArrowRight, Play, ShieldCheck, Clock, TrendingUp, CheckCircle } from 'lucide-react'
+import { ArrowRight, Play, ShieldCheck, Clock, TrendingUp, CheckCircle, UserCheck } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import Button from '@/components/ui/Button'
 
 const BENEFITS = [
   { icon: ShieldCheck, label: 'Fewer Preventable Denials', color: '#278A6B' },
   { icon: Clock, label: 'Faster Authorization Follow-Up', color: '#1BA098' },
+  { icon: UserCheck, label: 'Provider Credentialling', color: '#22B8B5' },
   { icon: TrendingUp, label: 'Better Revenue Visibility', color: '#0B3D62' },
 ]
 
