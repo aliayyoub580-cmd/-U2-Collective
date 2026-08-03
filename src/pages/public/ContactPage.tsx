@@ -97,7 +97,7 @@ export default function ContactPage() {
                 <h2 className="text-[1.25rem] font-bold text-[#0B3D62] mb-4">Contact Information</h2>
                 <div className="flex flex-col gap-4">
                   {[
-                    { icon: Mail, label: 'Email', value: 'support@u2collective.com' },
+                    { icon: Mail, label: 'Email', value: 'info@u2collective.com' },
                     { icon: Phone, label: 'Phone', value: '(800) 000-0000' },
                     { icon: MapPin, label: 'Location', value: 'United States' },
                     { icon: Clock, label: 'Business Hours', value: 'Mon–Fri, 8am–6pm ET' },

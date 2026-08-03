@@ -42,7 +42,7 @@ export default function SettingsPage() {
               <h2 className="text-[15px] font-bold text-[#0B3D62] mb-5">Company Profile</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                 <Input label="Company Name" defaultValue="U2 Collective" />
-                <Input label="Support Email" type="email" defaultValue="support@u2collective.com" />
+                <Input label="Support Email" type="email" defaultValue="info@u2collective.com" />
                 <Input label="Support Phone" defaultValue="(800) 000-0000" />
                 <Input label="Website" defaultValue="https://u2collective.com" />
               </div>

@@ -57,13 +57,17 @@ export default function Footer() {
             {/* Contact info */}
             <div className="flex flex-col gap-2.5 mb-6">
               {[
-                { icon: Mail, text: 'support@u2collective.com' },
-                { icon: Phone, text: '(800) 000-0000' },
+                { icon: Mail, text: 'info@u2collective.com', href: 'mailto:info@u2collective.com' },
+                { icon: Phone, text: '(800) 000-0000', href: 'tel:8000000000' },
                 { icon: MapPin, text: 'United States' },
-              ].map(({ icon: Icon, text }) => (
+              ].map(({ icon: Icon, text, href }) => (
                 <div key={text} className="flex items-center gap-2.5 text-[13px] text-[#93BAD0]">
                   <Icon size={13} className="text-[#1BA098] shrink-0" />
-                  {text}
+                  {href ? (
+                    <a href={href} className="hover:text-white transition-colors">{text}</a>
+                  ) : (
+                    <span>{text}</span>
+                  )}
                 </div>
               ))}
             </div>

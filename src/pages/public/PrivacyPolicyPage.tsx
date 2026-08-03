@@ -30,7 +30,7 @@ export default function PrivacyPolicyPage() {
             { heading: 'Data Security', body: 'Our platform is designed to support HIPAA-aligned data handling. We implement access controls, encrypted transmission and audit logging. Software and process design alone do not constitute HIPAA compliance. This section is a placeholder.' },
             { heading: 'Cookies and Tracking', body: 'We may use cookies and analytics tools to understand how visitors use our website. This section is a placeholder.' },
             { heading: 'Your Rights', body: 'Depending on your location, you may have rights regarding your personal data. This section is a placeholder.' },
-            { heading: 'Contact', body: 'For privacy-related questions, contact us at support@u2collective.com. This section is a placeholder.' },
+            { heading: 'Contact', body: 'For privacy-related questions, contact us at info@u2collective.com. This section is a placeholder.' },
           ].map((s) => (
             <section key={s.heading} className="mb-8">
               <h2 className="text-[1.1rem] font-bold text-[#0B3D62] mb-3 pb-2 border-b border-[#DCE5EA]">{s.heading}</h2>

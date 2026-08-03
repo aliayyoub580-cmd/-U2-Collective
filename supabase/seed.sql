@@ -83,7 +83,7 @@ ON CONFLICT (organization_id, metric_key) DO NOTHING;
 -- ─── System Settings ──────────────────────────────────────────────────────────
 INSERT INTO system_settings (key, value, description) VALUES
   ('company_name',      '"U2 Collective"',                          'Company display name'),
-  ('company_email',     '"support@u2collective.com"',               'Support email'),
+  ('company_email',     '"info@u2collective.com"',               'Support email'),
   ('company_phone',     '"(800) 000-0000"',                         'Support phone'),
   ('max_file_size_mb',  '25',                                       'Max document upload size in MB'),
   ('allowed_mime_types','["application/pdf","image/png","image/jpeg","image/tiff","application/msword","application/vnd.openxmlformats-officedocument.wordprocessingml.document"]',
