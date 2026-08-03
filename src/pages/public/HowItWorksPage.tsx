@@ -1,37 +1,43 @@
 import { Helmet } from 'react-helmet-async'
 import { motion } from 'framer-motion'
-import { Search, FileText, Send, RefreshCw, Flag, CheckCircle } from 'lucide-react'
+import { Calendar, Search, FileText, Send, RefreshCw, Flag, CheckCircle } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import Button from '@/components/ui/Button'
 import Breadcrumb from '@/components/ui/Breadcrumb'
 
 const STEPS = [
   {
-    number: '01', icon: Search, color: '#1BA098',
+    number: '01', icon: Calendar, color: '#1BA098',
+    title: 'Appointment Scheduling',
+    body: 'We capture patient details, verify intake information upfront, coordinate scheduling across provider calendars, and streamline clinic front-desk workflows to minimize no-shows and initiate timely verification.',
+    details: ['Patient intake & registration', 'Multi-provider scheduling', 'Calendar optimization', 'Pre-visit info collection'],
+  },
+  {
+    number: '02', icon: Search, color: '#0B3D62',
     title: 'Real-Time Eligibility Verification',
     body: 'Before every scheduled visit, we confirm coverage status, deductible, copay, out-of-pocket balances, network participation, referral requirements and plan limitations through payer portals and direct contact when needed.',
     details: ['Payer portal checks', 'Benefits documentation', 'Network status confirmation', 'Referral flag when required'],
   },
   {
-    number: '02', icon: FileText, color: '#0B3D62',
+    number: '03', icon: FileText, color: '#1BA098',
     title: 'Benefits Documentation',
     body: 'Verified benefits are documented in a structured format compatible with your EHR or PMS. Your team receives clear, complete information without needing to re-verify or interpret raw portal output.',
     details: ['Structured results delivered', 'EHR/PMS documentation', 'Staff notification', 'Issue flagging for review'],
   },
   {
-    number: '03', icon: Send, color: '#1BA098',
+    number: '04', icon: Send, color: '#0B3D62',
     title: 'Prior Authorization Submission',
     body: 'When prior authorization is required, we prepare all payer-specific documentation, coordinate clinical records and submit through the appropriate channel—portal, fax or phone—for each individual payer.',
     details: ['Payer requirement review', 'Clinical doc coordination', 'Timely submission', 'Confirmation tracking'],
   },
   {
-    number: '04', icon: RefreshCw, color: '#D89B2B',
+    number: '05', icon: RefreshCw, color: '#D89B2B',
     title: 'Active Tracking & Follow-Up',
     body: 'Every pending authorization is monitored through the payer review cycle. We follow up proactively on delayed responses, respond to requests for additional information and coordinate peer-to-peer reviews when required.',
     details: ['Status monitoring', 'P2P coordination', 'Additional info responses', 'Real-time portal updates'],
   },
   {
-    number: '05', icon: Flag, color: '#278A6B',
+    number: '06', icon: Flag, color: '#278A6B',
     title: 'Pre-Claim Risk Flagging',
     body: 'Before claim submission, outstanding authorization gaps and eligibility discrepancies are identified and communicated to your billing team—protecting reimbursement and reducing the risk of avoidable denials.',
     details: ['Auth gap identification', 'Eligibility discrepancy flags', 'Billing team alerts', 'Documentation review'],
@@ -43,7 +49,7 @@ export default function HowItWorksPage() {
     <>
       <Helmet>
         <title>How It Works | U2 Collective</title>
-        <meta name="description" content="A clear five-step workflow from eligibility verification to pre-claim risk flagging. See how U2 Collective manages insurance verification and prior authorization end-to-end." />
+        <meta name="description" content="A clear step-by-step workflow from appointment scheduling and eligibility verification to pre-claim risk flagging. See how U2 Collective manages healthcare workflows end-to-end." />
         <link rel="canonical" href="https://u2collective.com/how-it-works" />
       </Helmet>
 

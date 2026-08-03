@@ -1,37 +1,43 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
-import { Search, FileText, Send, RefreshCw, Flag } from 'lucide-react'
+import { Calendar, Search, FileText, Send, RefreshCw, Flag } from 'lucide-react'
 
 const STEPS = [
   {
     number: '01',
+    icon: Calendar,
+    title: 'Appointment Scheduling',
+    body: 'Patient intake details and scheduling are coordinated seamlessly across provider calendars to initiate the verification workflow.',
+  },
+  {
+    number: '02',
     icon: Search,
     title: 'Real-Time Eligibility Verification',
     body: 'Coverage, plan status, deductible, copay and benefits are reviewed before the scheduled visit to prevent billing surprises.',
   },
   {
-    number: '02',
+    number: '03',
     icon: FileText,
     title: 'Benefits Documentation',
     body: 'Verification results are documented clearly in your EHR, PMS or secure workflow for staff reference and compliance.',
   },
   {
-    number: '03',
+    number: '04',
     icon: Send,
     title: 'Prior Authorization Submission',
     body: 'Payer-specific requirements and supporting documents are prepared, reviewed and submitted on your behalf.',
   },
   {
-    number: '04',
+    number: '05',
     icon: RefreshCw,
     title: 'Tracking & Follow-Up',
     body: 'Authorization status is monitored through approval, request for information or denial—with proactive updates to your team.',
   },
   {
-    number: '05',
+    number: '06',
     icon: Flag,
     title: 'Pre-Claim Risk Flagging',
-    body: 'Missing information and authorization risks are surfaced before claim submission to protect your reimbursement.',
+    body: 'Missing information and authorization risks are surfaces before claim submission to protect your reimbursement.',
   },
 ]
 
