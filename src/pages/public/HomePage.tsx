@@ -6,7 +6,6 @@ import HowItWorksSection from '@/components/public/HowItWorksSection'
 import WhyChooseSection from '@/components/public/WhyChooseSection'
 import TrustedPlatformsMarquee from '@/components/public/TrustedPlatformsMarquee'
 import MetricsSection from '@/components/public/MetricsSection'
-import DashboardPreviewSection from '@/components/public/DashboardPreviewSection'
 import TestimonialsSection from '@/components/public/TestimonialsSection'
 import SpecialtiesSection from '@/components/public/SpecialtiesSection'
 import FAQSection from '@/components/public/FAQSection'
@@ -45,7 +44,6 @@ export default function HomePage() {
       <WhyChooseSection />
       <TrustedPlatformsMarquee />
       <MetricsSection />
-      <DashboardPreviewSection />
       <TestimonialsSection />
       <SpecialtiesSection />
       <FAQSection />
