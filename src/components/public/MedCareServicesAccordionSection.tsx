@@ -95,13 +95,13 @@ const SERVICE_CARDS: ServiceCard[] = [
   },
   {
     id: 'appeals',
-    kicker: 'Denial Resolution',
-    title: 'Appeals',
+    kicker: 'End-to-End Billing',
+    title: 'Complete RCM',
     description:
-      'Expert clinical appeal drafting, medical necessity documentation support, and aggressive claim denial overturn management.',
-    stat: '88%',
+      'End-to-end revenue cycle management: medical coding, claim submission, payment posting, denial management, and A/R follow-up.',
+    stat: '95%',
     statLabel:
-      'overturn rate on denied insurance authorizations.',
+      'first-pass clean claim rate across all payers.',
     bgImage: '/images/services/appeals.jpg',
     link: '/services/appeals',
     icon: (
