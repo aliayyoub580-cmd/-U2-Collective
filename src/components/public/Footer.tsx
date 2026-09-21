@@ -57,7 +57,7 @@ export default function Footer() {
             {/* Contact info */}
             <div className="flex flex-col gap-2.5 mb-6">
               {[
-                { icon: Mail, text: 'info@u2collective.com', href: 'mailto:info@u2collective.com' },
+                { icon: Mail, text: 'contact@u2collective.com', href: 'mailto:contact@u2collective.com' },
                 { icon: Phone, text: '(800) 000-0000', href: 'tel:8000000000' },
                 { icon: MapPin, text: 'United States' },
               ].map(({ icon: Icon, text, href }) => (
